@@ -15,6 +15,7 @@ class GetRepo extends HTMLElement{
         super();
         this.attachShadow({mode:'open'});
         this.shadowRoot.appendChild(getRepoTemplate.content.cloneNode(true));
+
     }
 }
 

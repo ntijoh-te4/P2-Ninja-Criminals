@@ -1,16 +1,18 @@
-const getReposTemplate = document.createElement('template');
-getReposTemplate.innerHTML = `
-<H1>Chose a repo!</H1>
-<section>
-</section>
-`;
+const gitUserName = 'ntijoh-Alexander-Fransson';
 
-class GetRepos extends HTMLElement{
-    constructor(){
-        super();
-        this.attachShadow({mode:'open'});
-        this.shadowRoot.appendChild(getReposTemplate.content.cloneNode(true));
-    }
-}
+const getRepos = async () => {
 
-window.customElements.define('get-repos', GetRepos);
+    const req = await fetch(`https://api.github.com/users/ntijoh-Alexander-Fransson/repos`);
+    const res = await req.json();
+    console.log(res);
+
+    const p = document.createElement('p');
+    p.innerText = JSON.stringify(res);
+
+    const main = document.querySelector('main');
+
+    main.appendChild(p);
+    
+} 
+
+getRepos();
