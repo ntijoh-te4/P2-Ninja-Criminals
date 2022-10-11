@@ -1,11 +1,8 @@
-//const gitUserName = 'ntijoh-Alexander-Fransson';
 
 const getRepos = async (username) => {
 
     const req = await fetch(`https://api.github.com/users/${username}/repos`);
     const res = await req.json();
-    console.log(res[0]);
-
     const main = document.querySelector('main');
 
     main.addEventListener('click', (e) => {
@@ -29,5 +26,3 @@ const getRepos = async (username) => {
     });
     
 } 
-
-getRepos();
