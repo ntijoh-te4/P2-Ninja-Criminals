@@ -11,10 +11,13 @@ getRepoTemplate.innerHTML = `
 `;
 
 class GetRepo extends HTMLElement{
-    constructor(){
+    constructor({info}){
         super();
         this.attachShadow({mode:'open'});
         this.shadowRoot.appendChild(getRepoTemplate.content.cloneNode(true));
+
+        this.setAttribute('repo-name', info.name);
+        this.setAttribute('repo-forks-url', info.forks);
 
     }
 }
