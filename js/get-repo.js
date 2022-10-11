@@ -5,7 +5,7 @@ getRepoTemplate.innerHTML = `
         <section>
             <a href="">show forks</a>
             <p>|<p>
-            <a href="">show on github</a>
+            <a class="toGithub" href="">show on github</a>
         </section>
     </section>
 `;
@@ -19,6 +19,8 @@ class GetRepo extends HTMLElement{
         this.setAttribute('repo-name', info.name);
         this.setAttribute('repo-forks-url', info.forks);
 
+        this.shadowRoot.querySelector('h3').innerText = info.name;
+        this.shadowRoot.querySelector('.toGithub').setAttribute('href', info.forks);
     }
 }
 
