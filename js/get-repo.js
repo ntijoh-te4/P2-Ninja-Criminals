@@ -10,7 +10,7 @@ getRepoTemplate.innerHTML = `
     </section>
 `;
 
-class GetRepoTemplate extends HTMLElement{
+class GetRepo extends HTMLElement{
     constructor(){
         super();
         this.attachShadow({mode:'open'});
@@ -18,4 +18,4 @@ class GetRepoTemplate extends HTMLElement{
     }
 }
 
-window.customElements.define('get-repo', GetRepoTemplate);
+window.customElements.define('get-repo', GetRepo);
