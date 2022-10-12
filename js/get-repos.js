@@ -13,7 +13,7 @@ const getRepos = async (username) => {
             });
         }).catch((error) => {
             const errorText = document.createElement('h4');
-            errorText.textContent = `...who doesn't exist`;
+            errorText.textContent = `...who doesn't exist...`;
             main.appendChild(errorText);
         });
 
