@@ -23,8 +23,11 @@ class searchbarComponent extends HTMLElement {
         this.shadowRoot.appendChild(template.content.cloneNode(true));
 
         // eventlistener som skriver ut vad som står i textfältet, primärt för debugging
-        this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', () => {
-            console.log(this.searchbarContent);
+        this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
+            if(e.keyCode === 13){
+                getRepos(this.searchbarContent);
+                document.querySelector('h1').style.display = 'none';
+            }
         });
     }
 
