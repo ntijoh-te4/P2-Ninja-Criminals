@@ -25,8 +25,15 @@ class searchbarComponent extends HTMLElement {
         // eventlistener som skriver ut vad som står i textfältet, primärt för debugging
         this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
             if(e.keyCode === 13){
-                getRepos(this.searchbarContent);
-                document.querySelector('h1').style.display = 'none';
+                const title = document.querySelector('h1')
+                if (this.searchbarContent === '') {
+                    main.innerHTML = '';
+                    main.appendChild(title);
+                    title.style.display = 'block';
+                } else {
+                    getRepos(this.searchbarContent.toLowerCase());
+                    title.style.display = 'none';
+                }
             }
         });
     }
