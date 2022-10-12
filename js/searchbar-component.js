@@ -25,12 +25,17 @@ class searchbarComponent extends HTMLElement {
         // eventlistener som skriver ut vad som står i textfältet, primärt för debugging
         this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
             if(e.keyCode === 13){
-                const title = document.querySelector('h1')
+                const title = document.createElement('h1');
+                title.innerText = 'Welcome to Teacher-o-Matic!'
+                main.innerHTML = '';
                 if (this.searchbarContent === '') {
-                    main.innerHTML = '';
                     main.appendChild(title);
                     title.style.display = 'block';
                 } else {
+                    const repoUserTitle = document.createElement('h3');
+                    repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
+                    main.appendChild(repoUserTitle);
+
                     getRepos(this.searchbarContent.toLowerCase());
                     title.style.display = 'none';
                 }
