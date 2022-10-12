@@ -3,9 +3,9 @@ getRepoTemplate.innerHTML = `
     <section>
         <h3>Repo name</h3>
         <section>
-            <a class="show-fork" href="">show forks</a>
+            <a class="show-fork" href="">Show Forks</a>
             <p>|<p>
-            <a class="to-github" href="">show on github</a>
+            <a class="to-github" href="">Show on GitHub</a>
         </section>
     </section>
 `;

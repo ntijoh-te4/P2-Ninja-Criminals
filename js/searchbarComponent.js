@@ -26,7 +26,6 @@ class searchbarComponent extends HTMLElement {
         this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
             if(e.keyCode === 13){
                 getRepos(this.searchbarContent);
-                document.querySelector('h1').style.display = 'none';
             }
         });
     }

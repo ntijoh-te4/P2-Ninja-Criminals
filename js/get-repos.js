@@ -1,36 +1,46 @@
+const main = document.querySelector('main');
 
 const getRepos = async (username) => {
 
-    const req = await fetch(`https://api.github.com/users/${username}/repos`);
-    const res = await req.json();
-
-    console.log(res)
-    const main = document.querySelector('main');
+    main.innerHTML = ''
+    await fetch(`https://api.github.com/users/${username}/repos`)
+        .then((req) => {
+            return req.json()
+        }).then((res) => {
+            res.forEach(element => {
+                const info = {name: element.name, forks: element.forks_url, link:element.html_url};
+                main.appendChild(new RepoList({info}));
+            });
+        }).catch((error) => {
+            const errorText = document.createElement('p')
+            errorText.textContent = "...who doesn't exist..."
+        })
     
     main.addEventListener('click', async (e) => {
         e.stopPropagation()
         if(e.composedPath()[0].className === "show-fork"){
             e.preventDefault()
-            document.querySelectorAll('get-repo').forEach(element => {
-                element.remove();
-            });
+
+            main.innerHTML = ''
             const resp = await fetch(`https://api.github.com/repos/${username}/${e.target.getAttribute('repo-name')}/contents/.manifest.json`);
             const data = await resp.json();
+            console.log(data)
             const decoded = atob(data.content)
-            console.log(decoded)
+            const file = decoded.split('\n')[2]
+                .split(' ')[decoded.split('\n')[2].split(' ').length - 1]
+                .substring(0, decoded.split('\n')[2].split(' ')[decoded.split('\n')[2].split(' ').length - 1].length - 1)
 
-            // få tag i filePath från manifest.json
-            // för varje fork url {
-                // const forkReq = await fetch(e.target.getAttribute('repo-forks-url'))
-                // const forkResp = await forkReq.json()
-                // main.appendChild(new ForkList(forkResp))
-            // }
-
+            const forkList = await fetch(e.target.getAttribute('repo-forks-url'))
+            const forkListResp = await forkList.json()
+            forkListResp.forEach(async (item) => {
+                const forkReq = await fetch(item.url)
+                const forkResp = await forkReq.json()
+                console.log(forkResp)
+                main.appendChild(new ForkList(file, forkResp))
+            })
+            main.style.display = 'grid'
+            main.style.gridTemplateColumns = '50% 50%'
+            main.style.columnGap = '5rem'
         }
-    });
-
-    res.forEach(element => {
-        const info = {name: element.name, forks: element.forks_url, link:element.html_url};
-        main.appendChild(new RepoList({info}));
     });
 } 

@@ -1,5 +1,5 @@
 class ForkList extends HTMLElement {
-    constructor(_data) {
+    constructor(file, data) {
         super();
         this.attachShadow({ mode: "open"} );
         this.shadowRoot.appendChild(this.#template().content.cloneNode(true))
@@ -16,11 +16,12 @@ class ForkList extends HTMLElement {
 
         this.shadowRoot.querySelector('.card-action').style.position = 'relative'
 
-        // Ändra alla värden från input (byta ut data.* mot rätt värden)
-        // this.shadowRoot.querySelector('.card-title').textContent = data.name
-        // this.shadowRoot.querySelector('.white-text').textContent = data.code
-        // this.shadowRoot.querySelector('p a').href = data.link
-        // this.shadowRoot.querySelector('.tests').innerHTML = data.tests
+        this.file = file
+        this.data = data
+        this.shadowRoot.querySelector('.card-title').textContent = data.full_name
+        this.shadowRoot.querySelector('p a').href = data.svn_url
+
+        this.getData()
     }
 
     #template() {
@@ -44,6 +45,10 @@ class ForkList extends HTMLElement {
 
             .card.large {
                 height: auto;
+            }
+
+            .waves-effect {
+                z-index: 0;
             }
         </style>
 
@@ -98,6 +103,20 @@ class ForkList extends HTMLElement {
         `
 
         return template
+    }
+
+    async getData() {
+        const url = `${this.data.url}/contents/${this.file}`.replace(/['"]+/g, '')
+        const resp = await fetch(url);
+        console.log(resp)
+        if (resp.status === 200) {
+            const data = await resp.json();
+            const decoded = atob(data.content)
+            this.shadowRoot.querySelector('.white-text').textContent = decoded
+        } else {
+            this.shadowRoot.querySelector('.white-text').textContent = `Could not find ${this.file}`
+        }
+        // this.shadowRoot.querySelector('.tests').innerHTML = data.tests
     }
 }
 
