@@ -11,7 +11,7 @@ const getRepos = async (username) => {
                 const info = {name: element.name, forks: element.forks_url, link:element.html_url};
                 main.appendChild(new RepoList({info}));
             });
-        }).catch((error) => {
+        }).catch((_error) => {
             const errorText = document.createElement('p')
             errorText.textContent = "...who doesn't exist..."
         })
@@ -24,7 +24,6 @@ const getRepos = async (username) => {
             main.innerHTML = ''
             const resp = await fetch(`https://api.github.com/repos/${username}/${e.target.getAttribute('repo-name')}/contents/.manifest.json`);
             const data = await resp.json();
-            console.log(data)
             const decoded = atob(data.content)
             const file = decoded.split('\n')[2]
                 .split(' ')[decoded.split('\n')[2].split(' ').length - 1]
@@ -35,7 +34,6 @@ const getRepos = async (username) => {
             forkListResp.forEach(async (item) => {
                 const forkReq = await fetch(item.url)
                 const forkResp = await forkReq.json()
-                console.log(forkResp)
                 main.appendChild(new ForkList(file, forkResp))
             })
             main.style.display = 'grid'
