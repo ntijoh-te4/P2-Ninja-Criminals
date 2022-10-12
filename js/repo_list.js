@@ -3,14 +3,14 @@ getRepoTemplate.innerHTML = `
     <section>
         <h3>Repo name</h3>
         <section>
-            <a class="show-fork" href="">show forks</a>
+            <a class="show-fork" href="">Show Forks</a>
             <p>|<p>
-            <a class="to-github" href="" target="_blank">show on github</a>
+            <a class="to-github" href="">Show on GitHub</a>
         </section>
     </section>
 `;
 
-class GetRepo extends HTMLElement{
+class RepoList extends HTMLElement{
     constructor({info}){
         super();
         this.attachShadow({mode:'open'});
@@ -24,4 +24,4 @@ class GetRepo extends HTMLElement{
     }
 }
 
-window.customElements.define('get-repo', GetRepo);
+window.customElements.define('repo-list', RepoList);

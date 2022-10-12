@@ -16,7 +16,7 @@ template.innerHTML =
 </nav>
 `;
 
-class searchbarComponent extends HTMLElement {
+class SearchbarComponent extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({mode:'open'});
@@ -49,4 +49,4 @@ class searchbarComponent extends HTMLElement {
     }
 }
 
-window.customElements.define('search-bar', searchbarComponent)
+window.customElements.define('search-bar', SearchbarComponent)
