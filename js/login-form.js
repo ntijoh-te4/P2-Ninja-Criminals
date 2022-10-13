@@ -42,6 +42,11 @@ class LoginForm extends HTMLElement {
         const res = await req.json();
 
         console.log(res);
+
+        main.querySelector('h1').style.display = 'block';
+        main.querySelector('p').style.display = 'block';
+
+        this.remove();
     }
 }
 

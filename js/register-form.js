@@ -18,7 +18,7 @@ class RegisterForm extends HTMLElement{
         this.attachShadow({mode:'open'});
         this.shadowRoot.appendChild(registerTemplate.content.cloneNode(true));
         this.form = this.shadowRoot.querySelector('form');
-        this.form.onsubmit = this.register
+        this.form.onsubmit = this.handleRegister
 
         this.xButton = this.shadowRoot.querySelector('#x');
         this.xButton.addEventListener('click', () => {
@@ -27,7 +27,7 @@ class RegisterForm extends HTMLElement{
         });
     }
 
-    register = async (e) => {
+    handleRegister = async (e) => {
         e.preventDefault(e);
 
         const name = this.shadowRoot.querySelector('input[placeholder="name"]').value;

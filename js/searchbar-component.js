@@ -28,6 +28,8 @@ class SearchbarComponent extends HTMLElement {
 
         this.icon.addEventListener('click', () => {
             if(!main.querySelectorAll('login-form').length){
+                main.querySelector('h1').style.display = 'none';
+                main.querySelector('p').style.display = 'none';
                 main.appendChild(new LoginForm());
             }
         });
