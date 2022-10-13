@@ -1,5 +1,5 @@
 class ForkList extends HTMLElement {
-    constructor(file, data) {
+    constructor(parentData, data) {
         super();
         this.attachShadow({ mode: "open"} );
         this.shadowRoot.appendChild(this.#template().content.cloneNode(true))
@@ -16,7 +16,7 @@ class ForkList extends HTMLElement {
 
         this.shadowRoot.querySelector('.card-action').style.position = 'relative'
 
-        this.file = file
+        this.parentData = parentData
         this.data = data
         this.shadowRoot.querySelector('.card-title').textContent = data.full_name
         this.shadowRoot.querySelector('p a').href = data.svn_url
@@ -67,9 +67,6 @@ class ForkList extends HTMLElement {
             </article>
             <p><a href="https://github.com/itggot-TE4/smallest_of_two">Show on GitHub</a></p>
             <article class="tests">
-                <p>Test "First is smallest": Passed</p>
-                <p>Test "Second is smallest": Passed</p>
-                <p>Test "Same size": Passed</p>
             </article>
             <article class="card-action">
                 <form action="#" class="col s12">
@@ -106,16 +103,20 @@ class ForkList extends HTMLElement {
     }
 
     async getData() {
-        const url = `${this.data.url}/contents/${this.file}`.replace(/['"]+/g, '')
+        const url = `${this.data.url}/contents/${this.parentData.filePath}`.replace(/['"]+/g, '')
         const resp = await fetch(url);
         if (resp.status === 200) {
             const data = await resp.json();
             const decoded = atob(data.content)
             this.shadowRoot.querySelector('.white-text').textContent = decoded
         } else {
-            this.shadowRoot.querySelector('.white-text').textContent = `Could not find ${this.file}`
+            this.shadowRoot.querySelector('.white-text').textContent = `Could not find ${this.parentData.filePath}`
         }
-        // this.shadowRoot.querySelector('.tests').innerHTML = data.tests
+        this.parentData.tests.forEach((test) => {
+            const testText = document.createElement('p')
+            testText.textContent = `Test "${test.description}": Passed`
+            this.shadowRoot.querySelector('.tests').appendChild(testText)
+        })
     }
 }
 
