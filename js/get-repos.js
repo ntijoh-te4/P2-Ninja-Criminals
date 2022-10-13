@@ -1,7 +1,6 @@
 const main = document.querySelector('main');
 
 const getRepos = async (username) => {
-
     await fetch(`https://api.github.com/users/${username}/repos`)
         .then((req) => {
             return req.json()
