@@ -1,11 +1,39 @@
 const getRepoTemplate = document.createElement('template');
 getRepoTemplate.innerHTML = `
-    <section>
+    <style>
+        @import url("https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css");
+
+        *, html {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .card {
+            width: fit-content;
+        }
+
+        .info {
+            display: flex;
+        }
+
+        .seperator {
+            margin-left: .5rem;
+            margin-right: .5rem;
+        }
+
+        .forks {
+            position: absolute;
+            right: .5rem
+        }
+    </style>
+    <section class="card">
         <h3>Repo name</h3>
-        <section>
+        <section class="info">
             <a class="show-fork" href="">Show Forks</a>
-            <p>|<p>
+            <p class="seperator">|<p>
             <a class="to-github" href="">Show on GitHub</a>
+            <p class="forks grey-text">0</p>
         </section>
     </section>
 `;
