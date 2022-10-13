@@ -24,16 +24,13 @@ const getRepos = async (username) => {
             const resp = await fetch(`https://api.github.com/repos/${username}/${e.target.getAttribute('repo-name')}/contents/.manifest.json`);
             const data = await resp.json();
             const decoded = atob(data.content)
-            const file = decoded.split('\n')[2]
-                .split(' ')[decoded.split('\n')[2].split(' ').length - 1]
-                .substring(0, decoded.split('\n')[2].split(' ')[decoded.split('\n')[2].split(' ').length - 1].length - 1)
-
+            const parsedData = JSON.parse(decoded)
             const forkList = await fetch(e.target.getAttribute('repo-forks-url'))
             const forkListResp = await forkList.json()
             forkListResp.forEach(async (item) => {
                 const forkReq = await fetch(item.url)
                 const forkResp = await forkReq.json()
-                main.appendChild(new ForkList(file, forkResp))
+                main.appendChild(new ForkList(parsedData, forkResp))
             })
             main.style.display = 'grid'
             main.style.gridTemplateColumns = '50% 50%'
