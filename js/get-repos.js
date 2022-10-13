@@ -1,7 +1,6 @@
 const main = document.querySelector('main');
 
 const getRepos = async (username) => {
-    main.innerHTML = ''
     await fetch(`https://api.github.com/users/${username}/repos`)
         .then((req) => {
             return req.json()
@@ -13,6 +12,7 @@ const getRepos = async (username) => {
         }).catch((_error) => {
             const errorText = document.createElement('p')
             errorText.textContent = "...who doesn't exist..."
+            main.appendChild(errorText)
         })
     
     main.addEventListener('click', async (e) => {
