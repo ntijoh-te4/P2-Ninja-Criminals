@@ -1,28 +1,43 @@
+const main = document.querySelector('main');
 
 const getRepos = async (username) => {
-
-    const req = await fetch(`https://api.github.com/users/${username}/repos`);
-    const res = await req.json();
-    const main = document.querySelector('main');
-
-    main.addEventListener('click', (e) => {
-        
+    main.innerHTML = ''
+    await fetch(`https://api.github.com/users/${username}/repos`)
+        .then((req) => {
+            return req.json()
+        }).then((res) => {
+            res.forEach(element => {
+                const info = {name: element.name, forks: element.forks_url, link:element.html_url};
+                main.appendChild(new RepoList({info}));
+            });
+        }).catch((_error) => {
+            const errorText = document.createElement('p')
+            errorText.textContent = "...who doesn't exist..."
+        })
+    
+    main.addEventListener('click', async (e) => {
+        e.stopPropagation()
         if(e.composedPath()[0].className === "show-fork"){
             e.preventDefault()
-            const forksLink = e.target.getAttribute('repo-forks-url');
-            console.log(forksLink);
 
-            document.querySelectorAll('get-repo').forEach(element => {
-                element.remove();
-            });
+            main.innerHTML = ''
+            const resp = await fetch(`https://api.github.com/repos/${username}/${e.target.getAttribute('repo-name')}/contents/.manifest.json`);
+            const data = await resp.json();
+            const decoded = atob(data.content)
+            const file = decoded.split('\n')[2]
+                .split(' ')[decoded.split('\n')[2].split(' ').length - 1]
+                .substring(0, decoded.split('\n')[2].split(' ')[decoded.split('\n')[2].split(' ').length - 1].length - 1)
 
-            //add function to get forks
+            const forkList = await fetch(e.target.getAttribute('repo-forks-url'))
+            const forkListResp = await forkList.json()
+            forkListResp.forEach(async (item) => {
+                const forkReq = await fetch(item.url)
+                const forkResp = await forkReq.json()
+                main.appendChild(new ForkList(file, forkResp))
+            })
+            main.style.display = 'grid'
+            main.style.gridTemplateColumns = '50% 50%'
+            main.style.columnGap = '5rem'
         }
     });
-
-    res.forEach(element => {
-        const info = {name: element.name, forks: element.forks_url, link:element.html_url};
-        main.appendChild(new GetRepo({info}));
-    });
-    
 } 
