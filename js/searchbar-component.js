@@ -4,6 +4,20 @@ class SearchbarComponent extends HTMLElement {
         this.attachShadow({mode:'open'});
         this.shadowRoot.appendChild(this.#template().content.cloneNode(true));
 
+        //eventlistener som displayar forms
+        this.icon = this.shadowRoot.querySelector('i');
+        this.icon.style.paddingLeft = '8px';
+
+        this.icon.addEventListener('click', () => {
+            if(!main.querySelectorAll('login-form').length){
+                main.querySelector('h1').style.display = 'none';
+                main.querySelector('p').style.display = 'none';
+                main.appendChild(new LoginForm());
+            }
+        });
+
+        // eventlistener som skriver ut vad som står i textfältet, primärt för debugging
+
         this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
             if(e.keyCode === 13){
                 const title = document.createElement('h1');

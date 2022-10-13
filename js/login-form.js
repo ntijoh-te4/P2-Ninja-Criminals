@@ -1,46 +1,53 @@
 const loginTemplate = document.createElement('template');
 loginTemplate.innerHTML = `
     <form>
-        <input id="name" type="text" placeholder="name"/>
-        <input type="text" placeholder="role"/>
-        <input type="text" placeholder="password"/>
-        <input type="submit" value="submit"/>
+        <h2>login</h2>
+
+        <input type="text" placeholder="name">
+        <input type="text" placeholder="password">
+        <input type="submit">
+
+        <button id="reg">Register</button>
+        <button id="x">X</button>
     </form>
 `;
 
-class RegisterForm extends HTMLElement{
+class LoginForm extends HTMLElement {
     constructor(){
         super();
         this.attachShadow({mode:'open'});
         this.shadowRoot.appendChild(loginTemplate.content.cloneNode(true));
         this.form = this.shadowRoot.querySelector('form');
-        this.form.setAttribute('where-to','register');
-        this.form.onsubmit = this.register;
+        this.form.onsubmit = this.handleLogin;
 
-        this.name = this.shadowRoot.querySelector('input[placeholder="name"]').value;
-        this.role = this.shadowRoot.querySelector('input[placeholder="role"]').value;
-        this.password = this.shadowRoot.querySelector('input[placeholder="password"]').value;
+        this.xButton = this.shadowRoot.querySelector('#x');
+        this.xButton.addEventListener('click', () => {
+            this.remove();
+        });
+
+        this.regButton = this.shadowRoot.querySelector('#reg');
+        this.regButton.addEventListener('click', () => {
+            main.appendChild(new RegisterForm);
+            this.remove();
+        });
     }
 
-    register = async (e) => {
-        e.preventDefault();
+    handleLogin = async (e) => {
+        e.preventDefault()
 
-        if(this.form.getAttribute('where-to') === 'register'){
+        const name = this.shadowRoot.querySelector('input[placeholder="name"]').value;
+        const password = this.shadowRoot.querySelector('input[placeholder="password"]').value;
 
-            const body = {
-                name: this.shadowRoot.querySelector('input[placeholder="name"]').value,
-                role: this.shadowRoot.querySelector('input[placeholder="role"]').value,
-                password: this.shadowRoot.querySelector('input[placeholder="password"]').value,
-            }
+        const req = await fetch(`http://localhost:4567/api/users/${name}/${password}`);
+        const res = await req.json();
 
-            const req = await fetch('http://localhost:4567/api/users', {
-                method:"POST",
-                body: JSON.stringify(body)
-            })
-            const res = await req.json();
-            console.log(res);
-        }
+        console.log(res);
+
+        main.querySelector('h1').style.display = 'block';
+        main.querySelector('p').style.display = 'block';
+
+        this.remove();
     }
 }
 
-window.customElements.define('reg-form', RegisterForm);
+window.customElements.define('login-form', LoginForm);
