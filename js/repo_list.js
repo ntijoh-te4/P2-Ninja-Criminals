@@ -60,7 +60,7 @@ class RepoList extends HTMLElement{
     }
 
     // async forks() {
-    //     const req = await fetch(this.info.forks)
+    //     const req = await API.fetch(this.info.forks)
     //     const resp = await req.json()
     //     const amount = await resp.length
     //     return amount
