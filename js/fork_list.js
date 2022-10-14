@@ -129,7 +129,9 @@ class ForkList extends HTMLElement {
         const radioField = this.shadowRoot.querySelectorAll('input[name=group1]')
 
         console.log(commentField)
-        console.log(radioField)
+        radioField.forEach(element => {
+            console.log(element)
+        })
 
 
         const responseBody = {comment: 'text', rating: 2}
@@ -139,6 +141,8 @@ class ForkList extends HTMLElement {
         });
 
         console.log(commentFormResponse.json())
+
+        return 'guka'
     }
 }
 
