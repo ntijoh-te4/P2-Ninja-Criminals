@@ -58,11 +58,17 @@ post '/api/comment' do
     headers( "Access-Control-Allow-Origin" => "*", 'Access-Control-Allow-Methods' => ["OPTIONS","POST","GET"])
     content_type :json
     payload = JSON.parse(request.body.read)
-    p payload
+    p db.execute('SELECT * FROM users').to_json
 
-    db.execute('INSERT INTO comments(comment,rating) VALUES (?,?)', payload['comment'], payload['rating'])
-    #db.execute('INSERT INTO comment_user(user_id,comment_id) VALUES (?,?)', lägg användarens id här :),db.execute('SELECT * FROM users ORDER BY id DESC LIMIT 1'))
-    return payload.to_json()
+    p payload['receiver_name']
+    db.execute('INSERT INTO comments(comment,rating) VALUES (?,?)', payload['comment'], payload['rating'].to_i)
+    comment_id = JSON.parse(db.execute('SELECT id FROM comments ORDER BY id DESC LIMIT 1').to_json)[0]['id']
+    receiver_id = JSON.parse(db.execute('SELECT id FROM users WHERE name = ?', payload['receiver_name']).to_json)[0]['id']
+    db.execute('INSERT INTO comment_user(receiver_id,sender_id,comment_id) VALUES (?,?,?)', receiver_id, payload['user_id'].to_i, comment_id)
+
+    p db.execute('SELECT * FROM comment_user').to_json
+
+    return {result: 'success'}.to_json
 end
 
 

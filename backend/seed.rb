@@ -21,7 +21,8 @@ db.execute('CREATE TABLE comments(
 )')
 
 db.execute('CREATE TABLE comment_user(
-    user_id INTEGER,
+    receiver_id INTEGER,
+    sender_id INTEGER,
     comment_id INTEGER
 )')
 
