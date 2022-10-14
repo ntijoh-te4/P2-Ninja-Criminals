@@ -133,9 +133,8 @@ class ForkList extends HTMLElement {
             console.log(element)
         })
 
-
-        const responseBody = {comment: 'text', rating: 2}
-        const commentFormResponse = await fetch('http://localhost:4567/api/comments', {
+        const responseBody = {comment:'text', rating:2}
+        const commentFormResponse = await fetch('http://localhost:4567/api/comment', {
             method: 'POST',
             body: JSON.stringify(responseBody)
         });
