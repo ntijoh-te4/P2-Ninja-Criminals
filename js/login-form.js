@@ -22,8 +22,7 @@ class LoginForm extends HTMLElement {
 
         this.xButton = this.shadowRoot.querySelector('#x');
         this.xButton.addEventListener('click', () => {
-            main.querySelector('h1').style.display = 'block';
-            main.querySelector('p').style.display = 'block';
+            resetGreeting();
             this.remove();
         });
 
@@ -47,30 +46,3 @@ class LoginForm extends HTMLElement {
 }
 
 window.customElements.define('login-form', LoginForm);
-
-//login function and username constant
-
-const loginFunction = async (name, password) => {
-    const req = await fetch(`http://localhost:4567/api/users/${name}/${password}`);
-    const res = await req.json();
-
-    document.cookie = `id=${res[0].id}`;
-    document.cookie = `name=${res[0].name}`;
-
-    console.log(document.cookie);
-    const newUsername = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1];
-
-    main.querySelector('h1').innerText = `Welcome to Teacher-o-Matic \n ${newUsername}!`;
-
-    main.querySelector('h1').style.display = 'block';
-    main.querySelector('p').style.display = 'block';
-}
-
-//see cookie even on reload
-
-let username = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1]; 
-let userId = document.cookie.split('; ').find(row => row.startsWith('id='))?.split('=')[1];
-
-if(username){
-    main.querySelector('h1').innerText = `Welcome to Teacher-o-Matic \n ${username}!`;
-}
