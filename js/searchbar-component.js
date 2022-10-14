@@ -4,21 +4,37 @@ class SearchbarComponent extends HTMLElement {
         this.attachShadow({mode:'open'});
         this.shadowRoot.appendChild(this.#template().content.cloneNode(true));
 
+        //eventlistener som displayar forms
+        this.icon = this.shadowRoot.querySelector('i');
+        this.icon.style.paddingLeft = '8px';
+
+        this.icon.addEventListener('click', () => {
+            if(!main.querySelectorAll('login-form').length){
+                main.querySelector('h1').style.display = 'none';
+                main.querySelector('p').style.display = 'none';
+                main.appendChild(new LoginForm());
+            }
+        });
+
+        // eventlistener som skriver ut vad som står i textfältet, primärt för debugging
+
         this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
             if(e.keyCode === 13){
                 const title = document.createElement('h1');
                 title.innerText = 'Welcome to Teacher-o-Matic!'
+                const info = document.createElement('p');
+                info.innerText = 'Enter your GitHub username in the header field'
                 main.innerHTML = '';
                 if (this.searchbarContent === '') {
                     main.appendChild(title);
-                    title.style.display = 'block';
+                    main.appendChild(info);
+                    main.appendChild(new RegisterForm)
                 } else {
                     const repoUserTitle = document.createElement('h3');
                     repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
                     main.appendChild(repoUserTitle);
 
                     getRepos(this.searchbarContent.toLowerCase());
-                    title.style.display = 'none';
                 }
             }
         });
