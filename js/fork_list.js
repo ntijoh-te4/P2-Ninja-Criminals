@@ -71,7 +71,7 @@ class ForkList extends HTMLElement {
             <article class="card-action">
                 <form action="#" class="col s12">
                     <aside class="input-field col s6">
-                        <input id="comment" type="text" class="validate"></input>
+                        <input id="comment" type="text" class="validate" name="comment">
                         <label for="comment">Comment</label>
                     </aside>
                     <p>
@@ -117,6 +117,16 @@ class ForkList extends HTMLElement {
             testText.textContent = `Test "${test.description}": Passed`
             this.shadowRoot.querySelector('.tests').appendChild(testText)
         })
+    }
+
+    async sendResponseData() {
+        const responseBody = {}
+        const commentFormResponse = await fetch('http://localhost:4567/api/comments', {
+            method: 'POST',
+            body: JSON.stringify(responseBody)
+        });
+
+        console.log(commentFormResponse.json())
     }
 }
 

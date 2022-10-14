@@ -54,6 +54,14 @@ post '/api/users' do
     return {result: 'success'}.to_json
 end
 
+post '/api/comment' do
+    headers( "Access-Control-Allow-Origin" => "*", 'Access-Control-Allow-Methods' => ["OPTIONS","POST","GET"])
+    content_type :json
+    payload = JSON.parse(request.body.read)
+    p payload
+    return payload
+end
+
 
 
     
