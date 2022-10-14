@@ -9,10 +9,19 @@ class SearchbarComponent extends HTMLElement {
         this.icon.style.paddingLeft = '8px';
 
         this.icon.addEventListener('click', () => {
-            if(!main.querySelectorAll('login-form').length){
+            const loggedInUser = document.cookie.split('; ').find(row => row.startsWith('id='))?.split('=')[1];
+
+            if( !loggedInUser && !main.querySelectorAll('reg-form').length && !main.querySelectorAll('login-form').length){
+
                 main.querySelector('h1').style.display = 'none';
                 main.querySelector('p').style.display = 'none';
                 main.appendChild(new LoginForm());
+
+            }else if(!main.querySelectorAll('logout-popup').length && loggedInUser){
+
+                main.querySelector('h1').style.display = 'none';
+                main.querySelector('p').style.display = 'none';
+                main.appendChild(new Logout());
             }
         });
 
