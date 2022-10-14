@@ -14,6 +14,11 @@ class ForkList extends HTMLElement {
                 this.shadowRoot.querySelector('#comment').value = ''
             }
         })
+        this.shadowRoot.querySelector('button[type=submit]').addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.sendResponseData()
+        })
 
         this.shadowRoot.querySelector('.card-action').style.position = 'relative'
 
@@ -75,7 +80,7 @@ class ForkList extends HTMLElement {
             <article class="tests">
             </article>
             <article class="card-action">
-                <form action="#" class="col s12">
+                <form class="col s12">
                     <aside class="input-field col s6">
                         <input id="comment" type="text" class="validate" name="comment">
                         <label for="comment">Comment</label>
@@ -132,7 +137,14 @@ class ForkList extends HTMLElement {
     }
 
     async sendResponseData() {
-        const responseBody = {}
+        const commentField = this.shadowRoot.querySelector('#comment').value
+        const radioField = this.shadowRoot.querySelectorAll('input[name=group1]')
+
+        console.log(commentField)
+        console.log(radioField)
+
+
+        const responseBody = {comment: 'text', rating: 2}
         const commentFormResponse = await fetch('http://localhost:4567/api/comments', {
             method: 'POST',
             body: JSON.stringify(responseBody)

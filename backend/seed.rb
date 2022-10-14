@@ -4,6 +4,9 @@ require 'pp'
 db = SQLite3::Database.new './backend/users.db'
 
 db.execute('DROP TABLE IF EXISTS users')
+db.execute('DROP TABLE IF EXISTS comments')
+db.execute('DROP TABLE IF EXISTS comment_user')
+
 db.execute('CREATE TABLE users(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR(40),
