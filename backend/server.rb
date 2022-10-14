@@ -65,7 +65,7 @@ post '/api/comment' do
     comment_id = JSON.parse(db.execute('SELECT id FROM comments ORDER BY id DESC LIMIT 1').to_json)[0]['id']
     receiver_id = JSON.parse(db.execute('SELECT id FROM users WHERE name = ?', payload['receiver_name']).to_json)[0]['id']
     db.execute('INSERT INTO comment_user(receiver_id,sender_id,comment_id) VALUES (?,?,?)', receiver_id, payload['user_id'].to_i, comment_id)
-
+    # SENDER ID ÄR INTE KORREKT, BÖR VARA RELATERAT TILL COOKIES
     p db.execute('SELECT * FROM comment_user').to_json
 
     return {result: 'success'}.to_json
