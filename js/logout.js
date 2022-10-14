@@ -17,20 +17,15 @@ class Logout extends HTMLElement{
         this.yesButton = this.shadowRoot.querySelector('#yes');
         this.yesButton.addEventListener('click', () => {
             
-            document.cookie = `id=${userId}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-            document.cookie = `name=${username}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
-
-            main.querySelector('h1').innerText = `Welcome to Teacher-o-Matic!`;
-            main.querySelector('h1').style.display = 'block';
-            main.querySelector('p').style.display = 'block';
-
+            document.cookie = `id=${getCookieValue('id')}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+            document.cookie = `name=${getCookieValue('name')}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+            resetGreeting();
             this.remove();
         })
 
         this.noButton = this.shadowRoot.querySelector('#no');
         this.noButton.addEventListener('click', () => {
-            main.querySelector('h1').style.display = 'block';
-            main.querySelector('p').style.display = 'block';
+            resetGreeting();
             this.remove();
         })
     }
