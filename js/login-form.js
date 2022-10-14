@@ -57,10 +57,10 @@ const loginFunction = async (name, password) => {
     document.cookie = `id=${res[0].id}`;
     document.cookie = `name=${res[0].name}`;
 
-    console.log(document.cookie.split('; ').find(row => row.startsWith('id='))?.split('=')[1]);
+    console.log(document.cookie);
+    const newUsername = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1];
 
-    const username = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1]; 
-    main.querySelector('h1').innerText = `Welcome to Teacher-o-Matic \n ${username}!`;
+    main.querySelector('h1').innerText = `Welcome to Teacher-o-Matic \n ${newUsername}!`;
 
     main.querySelector('h1').style.display = 'block';
     main.querySelector('p').style.display = 'block';
@@ -68,5 +68,9 @@ const loginFunction = async (name, password) => {
 
 //see cookie even on reload
 
-const username = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1]; 
-main.querySelector('h1').innerText = `Welcome to Teacher-o-Matic \n ${username}!`;
+let username = document.cookie.split('; ').find(row => row.startsWith('name='))?.split('=')[1]; 
+let userId = document.cookie.split('; ').find(row => row.startsWith('id='))?.split('=')[1];
+
+if(username){
+    main.querySelector('h1').innerText = `Welcome to Teacher-o-Matic \n ${username}!`;
+}
