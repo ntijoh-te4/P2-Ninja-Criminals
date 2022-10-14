@@ -104,7 +104,7 @@ class ForkList extends HTMLElement {
 
     async getData() {
         const url = `${this.data.url}/contents/${this.parentData.filePath}`.replace(/['"]+/g, '')
-        const resp = await fetch(url);
+        const resp = await API.fetch(url);
         if (resp.status === 200) {
             const data = await resp.json();
             const decoded = atob(data.content)
