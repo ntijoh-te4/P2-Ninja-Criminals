@@ -17,7 +17,7 @@ class ForkList extends HTMLElement {
         this.shadowRoot.querySelector('button[type=submit]').addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            this.sendResponseData()
+            this.sendResponseData(e)
         })
 
         this.shadowRoot.querySelector('.card-action').style.position = 'relative'
@@ -136,23 +136,22 @@ class ForkList extends HTMLElement {
         }
     }
 
-    async sendResponseData() {
+    async sendResponseData(e) {
+        e.preventDefault();
+        const receiverName = e.composedPath()[3].children[0].textContent.split('/')[0]
         const commentField = this.shadowRoot.querySelector('#comment').value
-        const radioField = this.shadowRoot.querySelector('input[checked]').id
+        const radioField = parseInt(this.shadowRoot.querySelector('input[checked]').id.slice(-1))
 
         console.log(commentField)
         console.log(radioField)
 
-        const idFromCookie = document.cookie.split('; ').map(cookie => cookie.split('='))[0][0]
-        const responseBody = {comment: commentField, rating: 2, user_id: idFromCookie}
+        const idFromCookie = document.cookie.split('; ').map(cookie => cookie.split('='))[0][1]
+        const responseBody = {comment: commentField, rating: radioField, receiver_name: receiverName, sender_id: idFromCookie}
+
         const commentFormResponse = await fetch('http://localhost:4567/api/comment', {
             method: 'POST',
             body: JSON.stringify(responseBody)
         });
-
-        console.log(commentFormResponse)
-
-        return 'guka'
     }
 }
 
