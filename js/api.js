@@ -1,5 +1,5 @@
 class API {
-    static token = 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;
+    static token = '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';
 
     static async fetch(url, opts = {}) {
         opts['headers'] = {
