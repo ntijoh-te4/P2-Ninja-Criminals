@@ -23,12 +23,14 @@ class RegisterForm extends HTMLElement{
         this.xButton = this.shadowRoot.querySelector('#x');
         this.xButton.addEventListener('click', () => {
             //ska man ta bort event listeners efter att shadowdom objekt tas bort?
+            main.querySelector('h1').style.display = 'block';
+            main.querySelector('p').style.display = 'block';
             this.remove();
         });
     }
 
     handleRegister = async (e) => {
-        e.preventDefault(e);
+        e.preventDefault();
 
         const name = this.shadowRoot.querySelector('input[placeholder="name"]').value;
         const password = this.shadowRoot.querySelector('input[placeholder="password"]').value;
@@ -52,7 +54,9 @@ class RegisterForm extends HTMLElement{
 
             // fixa efter att du fixat prevent default main.appendChild(new LoginForm);
 
-            this.remove();
+            //logga in automatiskt
+
+            await loginFunction(name,password);// något error
         }else{
             alert('cannot use this name or password');
         }
