@@ -68,3 +68,4 @@ class SearchbarComponent extends HTMLElement {
 }
 
 window.customElements.define('search-bar', SearchbarComponent)
+

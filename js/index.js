@@ -1,7 +1,7 @@
 const main = document.querySelector('main');
 
 const getRepos = async (username) => {
-    await fetch(`https://api.github.com/users/${username}/repos`)
+    await API.fetch(`https://api.github.com/users/${username}/repos`)
         .then((req) => {
             return req.json()
         }).then((res) => {
@@ -21,14 +21,14 @@ const getRepos = async (username) => {
             e.preventDefault()
 
             main.innerHTML = ''
-            const resp = await fetch(`https://api.github.com/repos/${username}/${e.target.getAttribute('repo-name')}/contents/.manifest.json`);
+            const resp = await API.fetch(`https://api.github.com/repos/${username}/${e.target.getAttribute('repo-name')}/contents/.manifest.json`);
             const data = await resp.json();
             const decoded = atob(data.content)
             const parsedData = JSON.parse(decoded)
-            const forkList = await fetch(e.target.getAttribute('repo-forks-url'))
+            const forkList = await API.fetch(e.target.getAttribute('repo-forks-url'))
             const forkListResp = await forkList.json()
             forkListResp.forEach(async (item) => {
-                const forkReq = await fetch(item.url)
+                const forkReq = await API.fetch(item.url)
                 const forkResp = await forkReq.json()
                 main.appendChild(new ForkList(parsedData, forkResp))
             })
