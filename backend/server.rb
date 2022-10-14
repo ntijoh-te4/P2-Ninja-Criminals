@@ -59,6 +59,9 @@ post '/api/comment' do
     content_type :json
     payload = JSON.parse(request.body.read)
     p payload
+
+    db.execute('INSERT INTO comments(comment,rating) VALUES (?,?)', payload['comment'], payload['rating'])
+    #db.execute('INSERT INTO comment_user(user_id,comment_id) VALUES (?,?)', lägg användarens id här :),db.execute('SELECT * FROM users ORDER BY id DESC LIMIT 1'))
     return payload.to_json()
 end
 

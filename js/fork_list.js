@@ -82,19 +82,19 @@ class ForkList extends HTMLElement {
                     </aside>
                     <p>
                         <label>
-                            <input name="group1" type="radio" checked/>
+                            <input id="radio1" name="group1" type="radio" checked/>
                             <span><i class="material-icons prefix">done</i>Klar</span>
                         </label>
                     </p>
                     <p>
                         <label>
-                            <input name="group1" type="radio" />
+                            <input id="radio2" name="group1" type="radio" />
                             <span><i class="material-icons prefix">refresh</i>Återgärd krävs</span>
                         </label>
                     </p>
                     <p>
                         <label>
-                            <input name="group1" type="radio" />
+                            <input id="radio3" name="group1" type="radio" />
                             <span><i class="material-icons prefix">visibility_off</i>Ej Bedömd</span>
                         </label>
                     </p>
@@ -127,20 +127,19 @@ class ForkList extends HTMLElement {
 
     async sendResponseData() {
         const commentField = this.shadowRoot.querySelector('#comment').value
-        const radioField = this.shadowRoot.querySelectorAll('input[name=group1]')
+        const radioField = this.shadowRoot.querySelector('input[checked]').id
 
         console.log(commentField)
-        radioField.forEach(element => {
-            console.log(element)
-        })
+        console.log(radioField)
 
-        const responseBody = {comment:'text', rating:2}
+        const idFromCookie = document.cookie.split('; ').map(cookie => cookie.split('='))[0][0]
+        const responseBody = {comment: commentField, rating: 2, user_id: idFromCookie}
         const commentFormResponse = await fetch('http://localhost:4567/api/comment', {
             method: 'POST',
             body: JSON.stringify(responseBody)
         });
 
-        console.log(commentFormResponse.json())
+        console.log(commentFormResponse)
 
         return 'guka'
     }
