@@ -4,7 +4,7 @@ require 'json'
 
 enable :sessions
 
-db = SQLite3::Database.new('users.db')
+db = SQLite3::Database.open('./backend/users.db')
 db.results_as_hash = true
 
 before do
@@ -39,7 +39,7 @@ post '/api/comment' do
     content_type :json
     payload = JSON.parse(request.body.read)
     p payload
-    return payload
+    return payload.to_json()
 end
 
 
