@@ -22,17 +22,19 @@ class SearchbarComponent extends HTMLElement {
             if(e.keyCode === 13){
                 const title = document.createElement('h1');
                 title.innerText = 'Welcome to Teacher-o-Matic!'
+                const info = document.createElement('p');
+                info.innerText = 'Enter your GitHub username in the header field'
                 main.innerHTML = '';
                 if (this.searchbarContent === '') {
                     main.appendChild(title);
-                    title.style.display = 'block';
+                    main.appendChild(info);
+                    main.appendChild(new RegisterForm)
                 } else {
                     const repoUserTitle = document.createElement('h3');
                     repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
                     main.appendChild(repoUserTitle);
 
                     getRepos(this.searchbarContent.toLowerCase());
-                    title.style.display = 'none';
                 }
             }
         });
