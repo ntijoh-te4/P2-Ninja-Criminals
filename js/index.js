@@ -69,6 +69,7 @@ const resetGreeting = () => {
     main.innerHTML = `
         <h1>Welcome to  Teacher-o-Matic${getCookieValue('name') ? '\n'+getCookieValue('name') : ""}!</h1>
         <p>Enter your GitHub username in the header field</p>
+        <h4>Comments:</h4>
     `;
 }
 

@@ -17,8 +17,8 @@ class ForkList extends HTMLElement {
         this.shadowRoot.querySelector('button[type=submit]').addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            const receiverName = e.composedPath()[3].children[0].textContent.split('/')[0]
-            this.sendResponseData(receiverName);
+            const forkTitle = e.composedPath()[3].children[0].textContent
+            this.sendResponseData(forkTitle);
         }, true)
 
         this.shadowRoot.querySelector('.card-action').style.position = 'relative'
@@ -83,7 +83,7 @@ class ForkList extends HTMLElement {
                     </aside>
                     <p>
                         <label>
-                            <input id="radio1" name="group1" type="radio" checked/>
+                            <input id="radio1" name="group1" type="radio"/>
                             <span><i class="material-icons prefix">done</i>Klar</span>
                         </label>
                     </p>
@@ -126,13 +126,13 @@ class ForkList extends HTMLElement {
         })
     }
 
-    async sendResponseData(receiverName) {
+    async sendResponseData(forkTitle) {
+        const receiverName = forkTitle.split('/')[0]
         const commentField = this.shadowRoot.querySelector('#comment').value
-        const radioField = parseInt(this.shadowRoot.querySelector('input[checked]').id.slice(-1))
-        const idFromCookie = document.cookie.split('; ').map(cookie => cookie.split('='))[0][1]
-        const responseBody = {comment: commentField, rating: radioField, receiver_name: receiverName, sender_id: idFromCookie}
+        const radioField = parseInt(this.shadowRoot.querySelector('input[name=group1]:checked').id.slice(-1))
+        const responseBody = {comment: commentField, rating: radioField, receiver_name: receiverName, assignment: forkTitle}
 
-        const commentFormResponse = await fetch('http://localhost:4567/api/comment/new', {
+        await fetch('http://localhost:4567/api/comment/new', {
             method: 'POST',
             body: JSON.stringify(responseBody)
         })
