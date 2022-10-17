@@ -4,7 +4,7 @@ loginTemplate.innerHTML = `
         <h2>login</h2>
 
         <input type="text" placeholder="name">
-        <input type="password" placeholder="password">
+        <input type="text" placeholder="password">
         <input type="submit">
 
         <button id="reg">Register</button>

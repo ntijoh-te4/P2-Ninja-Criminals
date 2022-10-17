@@ -11,7 +11,7 @@ before do
     content_type :json
     headers( 
         "Access-Control-Allow-Origin" => "*",
-        'Access-Control-Allow-Methods' => ["OPTIONS","POST","GET"]
+        "Access-Control-Allow-Methods" => ["OPTIONS","POST","GET"],
     )
 end
 
@@ -35,8 +35,6 @@ post '/api/users' do
 end
 
 post '/api/comment/new' do
-    headers( "Access-Control-Allow-Origin" => "*", 'Access-Control-Allow-Methods' => ["OPTIONS","POST","GET"])
-    content_type :json
     payload = JSON.parse(request.body.read)
 
     db.execute('INSERT INTO comments(comment,rating) VALUES (?,?)', payload['comment'], payload['rating'].to_i)
@@ -46,14 +44,8 @@ post '/api/comment/new' do
 end
 
 post '/api/comments' do
-    headers("Access-Control-Allow-Origin" => "*", 'Access-Control-Allow-Methods' => ["OPTIONS","POST","GET"])
-    content_type :json
     payload = JSON.parse(request.body.read)
-    if id != Nil
-        return_data = db.execute('SELECT comments.comment FROM comments INNER JOIN comment_user ON comments.id = comment_user.comment_id WHERE comment_user.receiver_id = ?', payload['id'].to_i)
-    else
-        return_data = {result: 'not found'}
-    end
+    return_data = db.execute('SELECT comments.comment FROM comments INNER JOIN comment_user ON comments.id = comment_user.comment_id WHERE comment_user.receiver_id = ?', payload['id'].to_i)
     p return_data.to_json
     return return_data.to_json
 end
