@@ -55,11 +55,11 @@ const loginFunction = async (name, password) => {
         method:"POST",
         body: JSON.stringify(body)
     });
-    
     const res = await req.json();
 
-    document.cookie = `id=${res[0].id}`;
-    document.cookie = `name=${res[0].name}`;
+    document.cookie = `id=${res.id}`;
+    document.cookie = `name=${res.name}`;
+    document.cookie = `role=${res.role}`;
 
     console.log(document.cookie);
     

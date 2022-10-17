@@ -25,7 +25,7 @@ end
 
 post '/api/user' do
     payload = JSON.parse(request.body.read)
-    db.execute('SELECT * FROM users WHERE name = ? AND password = ?', [payload['name'], payload['password']]).to_json
+    user = db.execute('SELECT * FROM users WHERE name = ? AND password = ?', [payload['name'], payload['password']])[0].to_json
 end
 
 post '/api/users' do
