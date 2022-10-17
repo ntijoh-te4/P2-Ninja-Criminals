@@ -46,7 +46,7 @@ class SearchbarComponent extends HTMLElement {
                 } else {
                     const userRole = getCookieValue("role");
 
-                    if(userRole){
+                    if(userRole == "teacher"){
                         const repoUserTitle = document.createElement('h3');
                         repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
                         main.appendChild(repoUserTitle);
@@ -95,7 +95,7 @@ class SearchbarComponent extends HTMLElement {
         const commentsData = await fetch(`http://localhost:4567/api/comments`, { 
             method: 'POST',
             body: JSON.stringify({id: activeId})
-        })
+        });
         const responseFromCommentsData = await commentsData.json()
         return responseFromCommentsData
     }
