@@ -6,7 +6,7 @@ function jumpscare() {
 
     setTimeout(()=>{
         jumpscare.style.visibility = 'hidden'
-    }, 2000)
+    }, 1250)
 
     const b = document.querySelector("#jsbutton");
     b.addEventListener("click",change);
