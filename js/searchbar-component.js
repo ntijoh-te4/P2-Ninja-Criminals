@@ -44,11 +44,21 @@ class SearchbarComponent extends HTMLElement {
                     resetGreeting();
                     main.appendChild(commentContainer)
                 } else {
-                    const repoUserTitle = document.createElement('h3');
-                    repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
-                    main.appendChild(repoUserTitle);
+                    const userRole = getCookieValue("role");
 
-                    getRepos(this.searchbarContent.toLowerCase());
+                    if(userRole){
+                        const repoUserTitle = document.createElement('h3');
+                        repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
+                        main.appendChild(repoUserTitle);
+
+                        getRepos(this.searchbarContent.toLowerCase());
+                    }else{
+                        const repoUserTitle = document.createElement('h3');
+                        repoUserTitle.textContent = `Click near the icon?`;
+                        main.appendChild(repoUserTitle);
+
+                        alert('Only the authenticated may look at the repos.\nAuthenticate yourselfe by clicking near the icon.');
+                    }
                 }
             }
         });
