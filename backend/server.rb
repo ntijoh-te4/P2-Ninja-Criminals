@@ -34,21 +34,24 @@ post '/api/users' do
     return {result: 'success'}.to_json
 end
 
-post '/api/comment' do
+post '/api/comment/new' do
     headers( "Access-Control-Allow-Origin" => "*", 'Access-Control-Allow-Methods' => ["OPTIONS","POST","GET"])
     content_type :json
     payload = JSON.parse(request.body.read)
-    p db.execute('SELECT * FROM users').to_json
 
-    p payload['receiver_name']
     db.execute('INSERT INTO comments(comment,rating) VALUES (?,?)', payload['comment'], payload['rating'].to_i)
     comment_id = JSON.parse(db.execute('SELECT id FROM comments ORDER BY id DESC LIMIT 1').to_json)[0]['id']
     receiver_id = JSON.parse(db.execute('SELECT id FROM users WHERE name = ?', payload['receiver_name']).to_json)[0]['id']
-    db.execute('INSERT INTO comment_user(receiver_id,sender_id,comment_id) VALUES (?,?,?)', receiver_id, payload['user_id'].to_i, comment_id)
-    # SENDER ID ÄR INTE KORREKT, BÖR VARA RELATERAT TILL COOKIES
-    p db.execute('SELECT * FROM comment_user').to_json
+    db.execute('INSERT INTO comment_user(receiver_id,sender_id,comment_id) VALUES (?,?,?)', receiver_id, payload['sender_id'].to_i, comment_id)
+end
 
-    return {result: 'success'}.to_json
+post '/api/comments' do
+    headers("Access-Control-Allow-Origin" => "*", 'Access-Control-Allow-Methods' => ["OPTIONS","POST","GET"])
+    content_type :json
+    payload = JSON.parse(request.body.read)
+    return_data = db.execute('SELECT comments.comment FROM comments INNER JOIN comment_user ON comments.id = comment_user.comment_id WHERE comment_user.receiver_id = ?', payload['id'].to_i)
+    p return_data.to_json
+    return return_data.to_json
 end
 
 

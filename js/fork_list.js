@@ -14,11 +14,12 @@ class ForkList extends HTMLElement {
                 this.shadowRoot.querySelector('#comment').value = ''
             }
         })
-        this.shadowRoot.querySelector('button[type=submit]').addEventListener('click', (e) => {
+        this.shadowRoot.querySelector('form').addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            this.sendResponseData(e)
-        })
+            const receiverName = e.composedPath()[3].children[0].textContent.split('/')[0]
+            this.sendResponseData(receiverName);
+        }, true)
 
         this.shadowRoot.querySelector('.card-action').style.position = 'relative'
 
@@ -136,22 +137,16 @@ class ForkList extends HTMLElement {
         }
     }
 
-    async sendResponseData(e) {
-        e.preventDefault();
-        const receiverName = e.composedPath()[3].children[0].textContent.split('/')[0]
+    async sendResponseData(receiverName) {
         const commentField = this.shadowRoot.querySelector('#comment').value
         const radioField = parseInt(this.shadowRoot.querySelector('input[checked]').id.slice(-1))
-
-        console.log(commentField)
-        console.log(radioField)
-
         const idFromCookie = document.cookie.split('; ').map(cookie => cookie.split('='))[0][1]
         const responseBody = {comment: commentField, rating: radioField, receiver_name: receiverName, sender_id: idFromCookie}
 
-        const commentFormResponse = await fetch('http://localhost:4567/api/comment', {
+        const commentFormResponse = await fetch('http://localhost:4567/api/comment/new', {
             method: 'POST',
             body: JSON.stringify(responseBody)
-        });
+        })
     }
 }
 
