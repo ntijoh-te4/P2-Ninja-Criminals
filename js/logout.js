@@ -19,6 +19,8 @@ class Logout extends HTMLElement{
             
             document.cookie = `id=${getCookieValue('id')}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
             document.cookie = `name=${getCookieValue('name')}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+            document.cookie = `role=${getCookieValue('role')}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
+
             resetGreeting();
             this.remove();
         })
