@@ -68,6 +68,7 @@ class SearchbarComponent extends HTMLElement {
                 // SKAPAR KOMMENTARSFÄLT
                 main.innerHTML = '';
                 if (this.searchbarContent === '') {
+                    main.style = ''
                     resetGreeting();
                     main.appendChild(commentContainer)
                 } else {
@@ -77,6 +78,9 @@ class SearchbarComponent extends HTMLElement {
                         const repoUserTitle = document.createElement('h3');
                         repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
                         main.appendChild(repoUserTitle);
+                        const div = document.createElement('div')
+                        div.style.width = '100vw'
+                        main.appendChild(div)
 
                         getRepos(this.searchbarContent.toLowerCase());
                     }else{

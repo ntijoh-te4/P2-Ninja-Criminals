@@ -63,13 +63,13 @@ class ForkList extends HTMLElement {
             <span class="card-title">itggot-TE4/smallest_of_two</span>
             <article class="card-image waves-effect waves-block waves-light">
                 <pre class="blue-grey darken-4">
-                    <code class="white-text">
-                        function smallestOfTwo(num1, num2) {
-                            if (num1 < num2) return num1
-                            if (num2 < num1) return num2
-                            return num1
-                        }
-                    </code>
+<code class="white-text">
+    function smallestOfTwo(num1, num2) {
+        if (num1 < num2) return num1
+        if (num2 < num1) return num2
+        return num1
+    }
+</code>
                 </pre>
             </article>
             <p><a href="https://github.com/itggot-TE4/smallest_of_two">Show on GitHub</a></p>
@@ -116,14 +116,20 @@ class ForkList extends HTMLElement {
             const data = await resp.json();
             const decoded = atob(data.content)
             this.shadowRoot.querySelector('.white-text').textContent = decoded
+            const func = new Function(`return ${decoded}`)();
+            this.parentData.tests.forEach((test) => {
+                const testText = document.createElement('p')
+
+                if (func.apply(null, test.arguments) === test.expected) {
+                    testText.textContent = `Test "${test.description}": Passed`
+                } else {
+                    testText.textContent = `Test "${test.description}": Failed`
+                }
+                this.shadowRoot.querySelector('.tests').appendChild(testText)
+            })
         } else {
             this.shadowRoot.querySelector('.white-text').textContent = `Could not find ${this.parentData.filePath}`
         }
-        this.parentData.tests.forEach((test) => {
-            const testText = document.createElement('p')
-            testText.textContent = `Test "${test.description}": Passed`
-            this.shadowRoot.querySelector('.tests').appendChild(testText)
-        })
     }
 
     async sendResponseData(forkTitle) {

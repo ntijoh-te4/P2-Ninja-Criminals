@@ -1,6 +1,10 @@
 const main = document.querySelector('main');
 
 const getRepos = async (username) => {
+    main.style.display = 'flex'
+    main.style.flexWrap = 'wrap'
+    main.style.rowGap = '1rem'
+    main.style.justifyContent = 'center'
     await API.fetch(`https://api.github.com/users/${username}/repos`)
         .then((req) => {
             return req.json()
@@ -32,9 +36,6 @@ const getRepos = async (username) => {
                 const forkResp = await forkReq.json()
                 main.appendChild(new ForkList(parsedData, forkResp))
             })
-            main.style.display = 'grid'
-            main.style.gridTemplateColumns = '50% 50%'
-            main.style.columnGap = '5rem'
         }
     });
 } 

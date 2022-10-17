@@ -26,6 +26,10 @@ getRepoTemplate.innerHTML = `
         padding: 1rem;
     }
 
+    .to-github {
+        margin-right: .5rem;
+    }
+
     .forks {
         position: absolute;
         right: .5rem;
@@ -55,16 +59,15 @@ class RepoList extends HTMLElement{
         this.shadowRoot.querySelector('h3').innerText = info.name;
         this.shadowRoot.querySelector('.to-github').setAttribute('href', info.link);
         this.info = info
-        // console.log(this.forks())
-        // this.shadowRoot.querySelector('.forks').textContent = this.forks()
+        this.forks()
     }
 
-    // async forks() {
-    //     const req = await API.fetch(this.info.forks)
-    //     const resp = await req.json()
-    //     const amount = await resp.length
-    //     return amount
-    // }
+    async forks() {
+        const req = await API.fetch(this.info.forks)
+        const resp = await req.json()
+        const amount = await resp.length
+        this.shadowRoot.querySelector('.forks').textContent = amount
+    }
 }
 
 window.customElements.define('repo-list', RepoList);
