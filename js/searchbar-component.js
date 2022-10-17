@@ -29,7 +29,7 @@ class SearchbarComponent extends HTMLElement {
                 // SKAPAR KOMMENTARSFÄLT
                 const commentContainer = document.createElement('section')
                 const commentContainerHeader = document.createElement('h4')
-                commentContainerHeader.innerText = 'Comments:'
+                commentContainer.style = 'display: flex; flex-wrap: wrap;'
                 commentContainer.appendChild(commentContainerHeader)
                 this.getComments().then(result => {
                     result.forEach(element => {
@@ -50,12 +50,14 @@ class SearchbarComponent extends HTMLElement {
                         comment.innerHTML = 
                         `
                         <div class="row">
-                            <div class="col s6 m6">
+                            <div class="col s1 m12">
                                 <div class="card">
                                     <div class="card-content">
                                         <p>${element['comment']}</p>
                                     </div>
-                                    <div class="card-action ${ratingColor}"></div>
+                                    <div class="card-action ${ratingColor}">
+                                        <p>${element['assignment_name']}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>

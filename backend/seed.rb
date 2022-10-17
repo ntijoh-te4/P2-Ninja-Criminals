@@ -1,7 +1,7 @@
 require 'sqlite3'
 require 'pp'
 
-db = SQLite3::Database.new './backend/users.db'
+db = SQLite3::Database.new 'users.db'
 
 db.execute('DROP TABLE IF EXISTS users')
 db.execute('DROP TABLE IF EXISTS comments')
@@ -22,7 +22,7 @@ db.execute('CREATE TABLE comments(
 
 db.execute('CREATE TABLE comment_user(
     receiver_id INTEGER,
-    sender_id INTEGER,
+    assignment_name VARCHAR(60),
     comment_id INTEGER
 )')
 
