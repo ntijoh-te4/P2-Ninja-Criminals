@@ -4,7 +4,6 @@ class ForkList extends HTMLElement {
         this.attachShadow({ mode: "open"} );
         this.shadowRoot.appendChild(this.#template().content.cloneNode(true))
         
-
         this.shadowRoot.querySelector('#comment').addEventListener('focus', (e) => {
             this.shadowRoot.querySelector('label[for=comment]').classList = 'active'
         })
