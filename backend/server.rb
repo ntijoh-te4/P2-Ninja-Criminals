@@ -46,7 +46,7 @@ post '/api/comments' do
     content_type :json
     payload = JSON.parse(request.body.read)
     if id != Nil
-        return_data = db.execute('SELECT comments.comment FROM comments INNER JOIN comment_user ON comments.id = comment_user.comment_id WHERE comment_user.receiver_id = ?', payload['id'].to_i)
+        return_data = db.execute('SELECT comments.comment,comments.rating FROM comments INNER JOIN comment_user ON comments.id = comment_user.comment_id WHERE comment_user.receiver_id = ?', payload['id'].to_i)
     else
         return_data = {result: 'not found'}
     end

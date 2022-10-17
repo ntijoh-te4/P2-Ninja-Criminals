@@ -33,8 +33,33 @@ class SearchbarComponent extends HTMLElement {
                 commentContainer.appendChild(commentContainerHeader)
                 this.getComments().then(result => {
                     result.forEach(element => {
+                        const rating = element['rating']
+                        let ratingColor;
+                        switch(rating) {
+                            case 1:
+                                ratingColor = 'green';
+                                break;
+                            case 2:
+                                ratingColor = 'yellow';
+                                break;
+                            case 3:
+                                ratingColor = 'red';
+                                break;
+                        }
                         const comment = document.createElement('p')
-                        comment.innerHTML = element['comment']
+                        comment.innerHTML = 
+                        `
+                        <div class="row">
+                            <div class="col s6 m6">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <p>${element['comment']}</p>
+                                    </div>
+                                    <div class="card-action ${ratingColor}"></div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
                         commentContainer.appendChild(comment)
                     });
                 })
