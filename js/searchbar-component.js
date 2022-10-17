@@ -26,9 +26,23 @@ class SearchbarComponent extends HTMLElement {
 
         this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
             if(e.keyCode === 13){
+                // SKAPAR KOMMENTARSFÄLT
+                const commentContainer = document.createElement('section')
+                const commentContainerHeader = document.createElement('h4')
+                commentContainerHeader.innerText = 'Comments:'
+                commentContainer.appendChild(commentContainerHeader)
+                this.getComments().then(result => {
+                    result.forEach(element => {
+                        const comment = document.createElement('p')
+                        comment.innerHTML = element['comment']
+                        commentContainer.appendChild(comment)
+                    });
+                })
+                // SKAPAR KOMMENTARSFÄLT
                 main.innerHTML = '';
                 if (this.searchbarContent === '') {
                     resetGreeting();
+                    main.appendChild(commentContainer)
                 } else {
                     const repoUserTitle = document.createElement('h3');
                     repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
@@ -64,6 +78,16 @@ class SearchbarComponent extends HTMLElement {
 
     get searchbarContent() {
         return (this.shadowRoot.querySelector('input').value);
+    }
+
+    async getComments() {
+        const activeId = document.cookie.split('; ').map(cookie => cookie.split('='))[0][1]
+        const commentsData = await fetch(`http://localhost:4567/api/comments`, { 
+            method: 'POST',
+            body: JSON.stringify({id: activeId})
+        })
+        const responseFromCommentsData = await commentsData.json()
+        return responseFromCommentsData
     }
 }
 
