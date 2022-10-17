@@ -29,12 +29,39 @@ class SearchbarComponent extends HTMLElement {
                 // SKAPAR KOMMENTARSFÄLT
                 const commentContainer = document.createElement('section')
                 const commentContainerHeader = document.createElement('h4')
-                commentContainerHeader.innerText = 'Comments:'
+                commentContainer.style = 'display: flex; flex-wrap: wrap;'
                 commentContainer.appendChild(commentContainerHeader)
                 this.getComments().then(result => {
                     result.forEach(element => {
+                        const rating = element['rating']
+                        let ratingColor;
+                        switch(rating) {
+                            case 1:
+                                ratingColor = 'green';
+                                break;
+                            case 2:
+                                ratingColor = 'yellow';
+                                break;
+                            case 3:
+                                ratingColor = 'red';
+                                break;
+                        }
                         const comment = document.createElement('p')
-                        comment.innerHTML = element['comment']
+                        comment.innerHTML = 
+                        `
+                        <div class="row">
+                            <div class="col s1 m12">
+                                <div class="card">
+                                    <div class="card-content">
+                                        <p>${element['comment']}</p>
+                                    </div>
+                                    <div class="card-action ${ratingColor}">
+                                        <p>${element['assignment_name']}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        `;
                         commentContainer.appendChild(comment)
                     });
                 })
