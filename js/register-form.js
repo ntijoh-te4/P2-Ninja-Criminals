@@ -23,8 +23,7 @@ class RegisterForm extends HTMLElement{
         this.xButton = this.shadowRoot.querySelector('#x');
         this.xButton.addEventListener('click', () => {
             //ska man ta bort event listeners efter att shadowdom objekt tas bort?
-            main.querySelector('h1').style.display = 'block';
-            main.querySelector('p').style.display = 'block';
+            resetGreeting();
             this.remove();
         });
     }
@@ -48,15 +47,11 @@ class RegisterForm extends HTMLElement{
             const regReq = await fetch('http://localhost:4567/api/users', {
                 method:"POST",
                 body: JSON.stringify(body)
-            })
+            });
             const regRes = await regReq.json();
             console.log(regRes);
 
-            // fixa efter att du fixat prevent default main.appendChild(new LoginForm);
-
-            //logga in automatiskt
-
-            await loginFunction(name,password);// något error
+            await loginFunction(name,password);
         }else{
             alert('cannot use this name or password');
         }

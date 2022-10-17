@@ -9,18 +9,15 @@ class SearchbarComponent extends HTMLElement {
         this.icon.style.paddingLeft = '8px';
 
         this.icon.addEventListener('click', () => {
-            const loggedInUser = document.cookie.split('; ').find(row => row.startsWith('id='))?.split('=')[1];
 
-            if( !loggedInUser && !main.querySelectorAll('reg-form').length && !main.querySelectorAll('login-form').length){
+            if( !getCookieValue('id') && !main.querySelectorAll('reg-form').length && !main.querySelectorAll('login-form').length){
 
-                main.querySelector('h1').style.display = 'none';
-                main.querySelector('p').style.display = 'none';
+                main.innerHTML = '';
                 main.appendChild(new LoginForm());
 
-            }else if(!main.querySelectorAll('logout-popup').length && loggedInUser){
+            }else if(!main.querySelectorAll('logout-popup').length && getCookieValue('id')){
 
-                main.querySelector('h1').style.display = 'none';
-                main.querySelector('p').style.display = 'none';
+                main.innerHTML = '';
                 main.appendChild(new Logout());
             }
         });
@@ -29,10 +26,7 @@ class SearchbarComponent extends HTMLElement {
 
         this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
             if(e.keyCode === 13){
-                const title = document.createElement('h1');
-                title.innerText = 'Welcome to Teacher-o-Matic!'
-                const info = document.createElement('p');
-                info.innerText = 'Enter your GitHub username in the header field'
+                // SKAPAR KOMMENTARSFÄLT
                 const commentContainer = document.createElement('section')
                 const commentContainerHeader = document.createElement('h4')
                 commentContainerHeader.innerText = 'Comments:'
@@ -44,12 +38,11 @@ class SearchbarComponent extends HTMLElement {
                         commentContainer.appendChild(comment)
                     });
                 })
+                // SKAPAR KOMMENTARSFÄLT
                 main.innerHTML = '';
                 if (this.searchbarContent === '') {
-                    main.appendChild(title);
-                    main.appendChild(info);
+                    resetGreeting();
                     main.appendChild(commentContainer)
-                    main.appendChild(new RegisterForm)
                 } else {
                     const repoUserTitle = document.createElement('h3');
                     repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
