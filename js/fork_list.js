@@ -14,7 +14,7 @@ class ForkList extends HTMLElement {
                 this.shadowRoot.querySelector('#comment').value = ''
             }
         })
-        this.shadowRoot.querySelector('form').addEventListener('click', (e) => {
+        this.shadowRoot.querySelector('button[type=submit]').addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation();
             const receiverName = e.composedPath()[3].children[0].textContent.split('/')[0]
