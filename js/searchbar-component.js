@@ -33,10 +33,22 @@ class SearchbarComponent extends HTMLElement {
                 title.innerText = 'Welcome to Teacher-o-Matic!'
                 const info = document.createElement('p');
                 info.innerText = 'Enter your GitHub username in the header field'
+                const commentContainer = document.createElement('section')
+                const commentContainerHeader = document.createElement('h4')
+                commentContainerHeader.innerText = 'Comments:'
+                commentContainer.appendChild(commentContainerHeader)
+                this.getComments().then(result => {
+                    result.forEach(element => {
+                        const comment = document.createElement('p')
+                        comment.innerHTML = element['comment']
+                        commentContainer.appendChild(comment)
+                    });
+                })
                 main.innerHTML = '';
                 if (this.searchbarContent === '') {
                     main.appendChild(title);
                     main.appendChild(info);
+                    main.appendChild(commentContainer)
                     main.appendChild(new RegisterForm)
                 } else {
                     const repoUserTitle = document.createElement('h3');
@@ -73,6 +85,16 @@ class SearchbarComponent extends HTMLElement {
 
     get searchbarContent() {
         return (this.shadowRoot.querySelector('input').value);
+    }
+
+    async getComments() {
+        const activeId = document.cookie.split('; ').map(cookie => cookie.split('='))[0][1]
+        const commentsData = await fetch(`http://localhost:4567/api/comments`, { 
+            method: 'POST',
+            body: JSON.stringify({id: activeId})
+        })
+        const responseFromCommentsData = await commentsData.json()
+        return responseFromCommentsData
     }
 }
 
