@@ -4,8 +4,14 @@ registerTemplate.innerHTML = `
         <h2>register</h2>
 
         <input id="name" type="text" placeholder="name"/>
-        <input type="text" placeholder="role"/>
-        <input type="text" placeholder="password"/>
+        <input type="text" placeholder="role" list="roles"/>
+
+        <datalist id="roles">
+            <option value="teacher">
+            <option value="student">
+        </datalist>
+
+        <input type="password" placeholder="password"/>
         <input type="submit" value="submit"/>
 
         <button id="x">X</button>
@@ -20,6 +26,8 @@ class RegisterForm extends HTMLElement{
         this.form = this.shadowRoot.querySelector('form');
         this.form.onsubmit = this.handleRegister
 
+        this.roleInput = this.shadowRoot.querySelector('input[placeholder="role"]');
+        
         this.xButton = this.shadowRoot.querySelector('#x');
         this.xButton.addEventListener('click', () => {
             //ska man ta bort event listeners efter att shadowdom objekt tas bort?
@@ -31,29 +39,43 @@ class RegisterForm extends HTMLElement{
     handleRegister = async (e) => {
         e.preventDefault();
 
-        const name = this.shadowRoot.querySelector('input[placeholder="name"]').value;
-        const password = this.shadowRoot.querySelector('input[placeholder="password"]').value;
+        if(this.roleInput.value === "teacher" || this.roleInput.value === "student"){
 
-        const checkReq = await fetch(`http://localhost:4567/api/users/${name}/${password}`);
-        const checkRes = await checkReq.json();
-
-        if(checkRes.length == 0){
+            const name = this.shadowRoot.querySelector('input[placeholder="name"]').value;
+            const password = this.shadowRoot.querySelector('input[placeholder="password"]').value;
             const body = {
                 name: name,
-                role: this.shadowRoot.querySelector('input[placeholder="role"]').value,
-                password: password,
-            }
+                password: password
+            };
 
-            const regReq = await fetch('http://localhost:4567/api/users', {
+            const checkReq = await fetch(`http://localhost:4567/api/user`,{
                 method:"POST",
                 body: JSON.stringify(body)
             });
-            const regRes = await regReq.json();
-            console.log(regRes);
 
-            await loginFunction(name,password);
+            const checkRes = await checkReq.json();
+
+            if(!checkRes){
+                const body = {
+                    name: name,
+                    role: this.roleInput.value,
+                    password: password,
+                }
+
+                const regReq = await fetch('http://localhost:4567/api/users', {
+                    method:"POST",
+                    body: JSON.stringify(body)
+                });
+                const regRes = await regReq.json();
+                console.log(regRes);
+
+                await loginFunction(name,password);
+            }else{
+                alert('cannot use this name or password');
+            }
+
         }else{
-            alert('cannot use this name or password');
+            alert('role must be teacher or student');
         }
     }
 }
