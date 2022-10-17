@@ -132,7 +132,7 @@ class ForkList extends HTMLElement {
         const radioField = parseInt(this.shadowRoot.querySelector('input[name=group1]:checked').id.slice(-1))
         const responseBody = {comment: commentField, rating: radioField, receiver_name: receiverName, assignment: forkTitle}
 
-        const commentFormResponse = await fetch('http://localhost:4567/api/comment/new', {
+        await fetch('http://localhost:4567/api/comment/new', {
             method: 'POST',
             body: JSON.stringify(responseBody)
         })
