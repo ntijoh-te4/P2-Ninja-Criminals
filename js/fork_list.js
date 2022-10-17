@@ -14,6 +14,12 @@ class ForkList extends HTMLElement {
                 this.shadowRoot.querySelector('#comment').value = ''
             }
         })
+        this.shadowRoot.querySelector('button[type=submit]').addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            const receiverName = e.composedPath()[3].children[0].textContent.split('/')[0]
+            this.sendResponseData(receiverName);
+        }, true)
 
         this.shadowRoot.querySelector('.card-action').style.position = 'relative'
 
@@ -70,26 +76,26 @@ class ForkList extends HTMLElement {
             <article class="tests">
             </article>
             <article class="card-action">
-                <form action="#" class="col s12">
+                <form class="col s12">
                     <aside class="input-field col s6">
-                        <input id="comment" type="text" class="validate"></input>
+                        <input id="comment" type="text" class="validate" name="comment">
                         <label for="comment">Comment</label>
                     </aside>
                     <p>
                         <label>
-                            <input name="group1" type="radio" checked/>
+                            <input id="radio1" name="group1" type="radio" checked/>
                             <span><i class="material-icons prefix">done</i>Klar</span>
                         </label>
                     </p>
                     <p>
                         <label>
-                            <input name="group1" type="radio" />
+                            <input id="radio2" name="group1" type="radio" />
                             <span><i class="material-icons prefix">refresh</i>Återgärd krävs</span>
                         </label>
                     </p>
                     <p>
                         <label>
-                            <input name="group1" type="radio" />
+                            <input id="radio3" name="group1" type="radio" />
                             <span><i class="material-icons prefix">visibility_off</i>Ej Bedömd</span>
                         </label>
                     </p>
@@ -117,6 +123,18 @@ class ForkList extends HTMLElement {
             const testText = document.createElement('p')
             testText.textContent = `Test "${test.description}": Passed`
             this.shadowRoot.querySelector('.tests').appendChild(testText)
+        })
+    }
+
+    async sendResponseData(receiverName) {
+        const commentField = this.shadowRoot.querySelector('#comment').value
+        const radioField = parseInt(this.shadowRoot.querySelector('input[checked]').id.slice(-1))
+        const idFromCookie = document.cookie.split('; ').map(cookie => cookie.split('='))[0][1]
+        const responseBody = {comment: commentField, rating: radioField, receiver_name: receiverName, sender_id: idFromCookie}
+
+        const commentFormResponse = await fetch('http://localhost:4567/api/comment/new', {
+            method: 'POST',
+            body: JSON.stringify(responseBody)
         })
     }
 }
