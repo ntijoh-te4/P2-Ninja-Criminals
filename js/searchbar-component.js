@@ -35,13 +35,16 @@ class SearchbarComponent extends HTMLElement {
                 info.innerText = 'Enter your GitHub username in the header field'
                 main.innerHTML = '';
                 if (this.searchbarContent === '') {
+                    main.style = ''
                     main.appendChild(title);
                     main.appendChild(info);
-                    main.appendChild(new RegisterForm)
                 } else {
                     const repoUserTitle = document.createElement('h3');
                     repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
-                    main.appendChild(repoUserTitle);
+                    main.prepend(repoUserTitle);
+                    const div = document.createElement('div')
+                    div.style.width = '100vw'
+                    main.appendChild(div)
 
                     getRepos(this.searchbarContent.toLowerCase());
                 }

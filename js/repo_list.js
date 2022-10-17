@@ -22,6 +22,10 @@ getRepoTemplate.innerHTML = `
         margin-right: .5rem;
     }
 
+    h3 {
+        margin: 0;
+    }
+
     h3, article {
         padding: 1rem;
     }
@@ -29,6 +33,10 @@ getRepoTemplate.innerHTML = `
     .forks {
         position: absolute;
         right: .5rem;
+    }
+
+    .to-github {
+        margin-right: 1rem;
     }
     </style>
     
@@ -39,7 +47,7 @@ getRepoTemplate.innerHTML = `
             <p class="seperator">|<p>
             <a class="to-github" href="">Show on GitHub</a>
             <p class="forks grey-text">0</p>
-        </article>
+            </article>
     </section>
 `;
 
@@ -53,18 +61,18 @@ class RepoList extends HTMLElement{
         this.setAttribute('repo-forks-url', info.forks);
 
         this.shadowRoot.querySelector('h3').innerText = info.name;
+        // this.shadowRoot.querySelector('h3').style.marginRight = '1rem';
         this.shadowRoot.querySelector('.to-github').setAttribute('href', info.link);
         this.info = info
-        // console.log(this.forks())
-        // this.shadowRoot.querySelector('.forks').textContent = this.forks()
+        this.forks()
     }
-
-    // async forks() {
-    //     const req = await API.fetch(this.info.forks)
-    //     const resp = await req.json()
-    //     const amount = await resp.length
-    //     return amount
-    // }
+    
+    async forks() {
+        const req = await API.fetch(this.info.forks)
+        const resp = await req.json()
+        const amount = await resp.length
+        this.shadowRoot.querySelector('.forks').textContent = amount
+    }
 }
 
 window.customElements.define('repo-list', RepoList);
