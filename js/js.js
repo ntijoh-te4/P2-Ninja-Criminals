@@ -1,27 +1,22 @@
 function jumpscare() {
-    var jumpscare = document.getElementById("jumpscare");
+    const jumpscare = document.querySelector("#jumpscare");
     jumpscare.style.visibility = "visible";
-    var audio = document.getElementById("scream");
+    const audio = document.querySelector("#scream");
     audio.play()
 
     setTimeout(()=>{
         jumpscare.style.visibility = 'hidden'
     }, 2000)
 
-    var b = document.querySelector("#jsbutton");
+    const b = document.querySelector("#jsbutton");
     b.addEventListener("click",change);
     
-    function change()
-    {
-    let i =Math.abs(Math.floor(Math.random()*window.innerWidth-55))
-    let j = Math.abs(Math.floor(Math.random()*window.innerHeight-21));
+    function change() {
+    let i = Math.abs(Math.floor(Math.random() * window.innerWidth - 55))
+    let j = Math.abs(Math.floor(Math.random() * window.innerHeight - 21));
     console.log('here' , i ,j , b.style.left , b.style.top);
-        b.style.left = i+'px';
-        b.style.top = j + "px";
-    }
-
-
-    }
-
     
-    
+    b.style.left = i+'px';
+    b.style.top = j + "px";
+    }
+}
