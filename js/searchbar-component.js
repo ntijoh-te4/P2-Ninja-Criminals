@@ -26,55 +26,15 @@ class SearchbarComponent extends HTMLElement {
 
         this.shadowRoot.querySelector('#inputbar').addEventListener('keyup', (e) => {
             if(e.keyCode === 13){
-                // SKAPAR KOMMENTARSFÄLT
-                const commentContainer = document.createElement('section')
-                const commentContainerHeader = document.createElement('h4')
-                commentContainer.style = 'display: flex; flex-wrap: wrap;'
-                commentContainer.appendChild(commentContainerHeader)
-                this.getComments().then(result => {
-                    result.forEach(element => {
-                        const rating = element['rating']
-                        let ratingColor;
-                        switch(rating) {
-                            case 1:
-                                ratingColor = 'green';
-                                break;
-                            case 2:
-                                ratingColor = 'yellow';
-                                break;
-                            case 3:
-                                ratingColor = 'red';
-                                break;
-                        }
-                        const comment = document.createElement('p')
-                        comment.innerHTML = 
-                        `
-                        <div class="row">
-                            <div class="col s1 m12">
-                                <div class="card">
-                                    <div class="card-content">
-                                        <p>${element['comment']}</p>
-                                    </div>
-                                    <div class="card-action ${ratingColor}">
-                                        <p>${element['assignment_name']}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        `;
-                        commentContainer.appendChild(comment)
-                    });
-                })
-                // SKAPAR KOMMENTARSFÄLT
+
                 main.innerHTML = '';
                 if (this.searchbarContent === '') {
                     main.style = ''
                     resetGreeting();
-                    main.appendChild(commentContainer)
                 } else {
                     const userRole = getCookieValue("role");
 
-                    if(userRole){
+                    if(userRole == "teacher"){
                         const repoUserTitle = document.createElement('h3');
                         repoUserTitle.textContent = `Showing repos of ${this.searchbarContent}`;
                         main.appendChild(repoUserTitle);
@@ -126,7 +86,7 @@ class SearchbarComponent extends HTMLElement {
         const commentsData = await fetch(`http://localhost:4567/api/comments`, { 
             method: 'POST',
             body: JSON.stringify({id: activeId})
-        })
+        });
         const responseFromCommentsData = await commentsData.json()
         return responseFromCommentsData
     }

@@ -14,11 +14,12 @@ class ForkList extends HTMLElement {
                 this.shadowRoot.querySelector('#comment').value = ''
             }
         })
-        this.shadowRoot.querySelector('button[type=submit]').addEventListener('click', (e) => {
+        this.shadowRoot.querySelector('button[type=submit]').addEventListener('click', async (e) => {
             e.preventDefault();
             e.stopPropagation();
             const forkTitle = e.composedPath()[3].children[0].textContent
-            this.sendResponseData(forkTitle);
+            await this.sendResponseData(forkTitle);
+            await resetGreeting();
         }, true)
 
         this.shadowRoot.querySelector('.card-action').style.position = 'relative'

@@ -29,9 +29,9 @@ class RegisterForm extends HTMLElement{
         this.roleInput = this.shadowRoot.querySelector('input[placeholder="role"]');
         
         this.xButton = this.shadowRoot.querySelector('#x');
-        this.xButton.addEventListener('click', () => {
+        this.xButton.addEventListener('click', async () => {
             //ska man ta bort event listeners efter att shadowdom objekt tas bort?
-            resetGreeting();
+            await resetGreeting();
             this.remove();
         });
     }

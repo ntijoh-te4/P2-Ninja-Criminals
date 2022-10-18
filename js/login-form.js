@@ -21,8 +21,8 @@ class LoginForm extends HTMLElement {
         this.form.onsubmit = this.handleLogin;
 
         this.xButton = this.shadowRoot.querySelector('#x');
-        this.xButton.addEventListener('click', () => {
-            resetGreeting();
+        this.xButton.addEventListener('click', async () => {
+            await resetGreeting();
             this.remove();
         });
 
