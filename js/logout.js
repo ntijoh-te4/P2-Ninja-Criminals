@@ -1,7 +1,7 @@
 const logoutTemplat = document.createElement('template');
 logoutTemplat.innerHTML = `
     <section>
-        <h2>Are you sure you want to logg out</h2>
+        <h2>Are you sure you want to log out?</h2>
         <br>
         <button id="yes">Yes!</button> 
         <button id="no">No!</button>
