@@ -1,5 +1,9 @@
 const main = document.querySelector('main');
 
+setTimeout( async () => {
+    await resetGreeting();
+}, 10);
+
 const getRepos = async (username) => {
     await API.fetch(`https://api.github.com/users/${username}/repos`)
         .then((req) => {
@@ -59,18 +63,81 @@ const loginFunction = async (name, password) => {
     document.cookie = `id=${res.id}`;
     document.cookie = `name=${res.name}`;
     document.cookie = `role=${res.role}`;
-
-    console.log(document.cookie);
     
     resetGreeting();
 }
 
-const resetGreeting = () => {
-    main.innerHTML = `
-        <h1>Welcome to  Teacher-o-Matic${getCookieValue('name') ? '\n'+getCookieValue('name') : ""}!</h1>
+const resetGreeting = async () => {
+    if(getCookieValue('name')){
+
+        main.innerHTML = `
+        <h1>Welcome to  Teacher-o-Matic\n${getCookieValue('name')}!</h1>
         <p>Enter your GitHub username in the header field</p>
         <h4>Comments:</h4>
-    `;
+        `;
+        await showUserComments();
+
+    }else{
+        main.innerHTML = `
+        <h1>Welcome to  Teacher-o-Matic!</h1>
+        <p>Enter your GitHub username in the header field</p>
+        `;
+    }
 }
 
-resetGreeting();
+const getComments = async () => {
+    const activeId = document.cookie.split('; ').map(cookie => cookie.split('='))[0][1]
+    const commentsData = await fetch(`http://localhost:4567/api/comments`, { 
+        method: 'POST',
+        body: JSON.stringify({id: activeId})
+    });
+    const responseFromCommentsData = await commentsData.json()
+    return responseFromCommentsData
+}
+
+const showUserComments = async () => {
+    const commentContainer = document.createElement('section')
+    const commentContainerHeader = document.createElement('h4')
+
+    commentContainer.style = 'display: flex; flex-wrap: wrap;'
+    commentContainer.appendChild(commentContainerHeader)
+
+    const currentComments = await getComments()
+
+    currentComments.forEach(element => {
+        const rating = element['rating']
+        let ratingColor;
+        switch(rating) {
+            case 1:
+                ratingColor = 'green';
+                break;
+            case 2:
+                ratingColor = 'yellow';
+                break;
+            case 3:
+                ratingColor = 'red';
+                break;
+        }
+        const comment = document.createElement('p')
+        comment.innerHTML = 
+        `
+        <div class="row">
+            <div class="col s1 m12">
+                <div class="card">
+                    <div class="card-content">
+                        <p>${element['comment']}</p>
+                    </div>
+                    <div class="card-action ${ratingColor}">
+                        <p>${element['assignment_name']}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        `;
+        commentContainer.appendChild(comment)
+    }); 
+    
+    main.appendChild(commentContainer);
+}
+
+ 

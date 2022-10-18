@@ -15,19 +15,19 @@ class Logout extends HTMLElement{
         this.shadowRoot.appendChild(logoutTemplat.content.cloneNode(true));
 
         this.yesButton = this.shadowRoot.querySelector('#yes');
-        this.yesButton.addEventListener('click', () => {
+        this.yesButton.addEventListener('click', async () => {
             
             document.cookie = `id=${getCookieValue('id')}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
             document.cookie = `name=${getCookieValue('name')}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
             document.cookie = `role=${getCookieValue('role')}; expires=Thu, 01 Jan 1970 00:00:01 GMT`;
 
-            resetGreeting();
+            await resetGreeting();
             this.remove();
         })
 
         this.noButton = this.shadowRoot.querySelector('#no');
-        this.noButton.addEventListener('click', () => {
-            resetGreeting();
+        this.noButton.addEventListener('click', async () => {
+            await resetGreeting();
             this.remove();
         })
     }
