@@ -65,21 +65,25 @@ const loginFunction = async (name, password) => {
     document.cookie = `name=${res.name}`;
     document.cookie = `role=${res.role}`;
     
-    resetGreeting();
+    await resetGreeting();
 }
 
 const resetGreeting = async () => {
     if(getCookieValue('name')){
 
         main.innerHTML = `
-        <h1>Welcome to  Teacher-o-Matic\n${getCookieValue('name')}!</h1>
-        <p>Enter your GitHub username in the header field</p>
-        <h4>Comments:</h4>
+        <br>
+        <h1>Welcome to  Teacher-o-Matic!</h1>
+        <p>${getCookieValue('name')}, enter your GitHub username in the header field</p>
+        <br>
+        <br>
+        <br>
         `;
         await showUserComments();
 
     }else{
         main.innerHTML = `
+        <br>
         <h1>Welcome to  Teacher-o-Matic!</h1>
         <p>Enter your GitHub username in the header field</p>
         `;
@@ -105,40 +109,45 @@ const showUserComments = async () => {
 
     const currentComments = await getComments()
 
-    currentComments.forEach(element => {
-        const rating = element['rating']
-        let ratingColor;
-        switch(rating) {
-            case 1:
-                ratingColor = 'green';
-                break;
-            case 2:
-                ratingColor = 'yellow';
-                break;
-            case 3:
-                ratingColor = 'red';
-                break;
-        }
-        const comment = document.createElement('p')
-        comment.innerHTML = 
-        `
-        <div class="row">
-            <div class="col s1 m12">
-                <div class="card">
-                    <div class="card-content">
-                        <p>${element['comment']}</p>
-                    </div>
-                    <div class="card-action ${ratingColor}">
-                        <p>${element['assignment_name']}</p>
+    if(currentComments.length){
+        currentComments.forEach(element => {
+            const rating = element['rating']
+            let ratingColor;
+            switch(rating) {
+                case 1:
+                    ratingColor = 'green';
+                    break;
+                case 2:
+                    ratingColor = 'yellow';
+                    break;
+                case 3:
+                    ratingColor = 'red';
+                    break;
+            }
+            const comment = document.createElement('p')
+            comment.innerHTML = 
+            `
+            <div class="row">
+                <div class="col s1 m12">
+                    <div class="card">
+                        <div class="card-content">
+                            <p>${element['comment']}</p>
+                        </div>
+                        <div class="card-action ${ratingColor}">
+                            <p>${element['assignment_name']}</p>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        `;
-        commentContainer.appendChild(comment)
-    }); 
-    
-    main.appendChild(commentContainer);
+            `;
+            commentContainer.appendChild(comment)
+        }); 
+        const commentTitle = document.createElement('h4');
+        commentTitle.innerText = "Comments:";
+        main.appendChild(commentTitle);
+
+        main.appendChild(commentContainer);
+    }
 }
 
  

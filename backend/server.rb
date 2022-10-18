@@ -49,9 +49,3 @@ post '/api/comments' do
     p return_data.to_json
     return return_data.to_json
 end
-
-
-
-    
-
-
