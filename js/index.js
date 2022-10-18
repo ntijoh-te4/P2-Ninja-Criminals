@@ -65,15 +65,18 @@ const loginFunction = async (name, password) => {
     document.cookie = `name=${res.name}`;
     document.cookie = `role=${res.role}`;
     
-    resetGreeting();
+    await resetGreeting();
 }
 
 const resetGreeting = async () => {
     if(getCookieValue('name')){
 
         main.innerHTML = `
-        <h1>Welcome to  Teacher-o-Matic\n${getCookieValue('name')}!</h1>
-        <p>Enter your GitHub username in the header field</p>
+        <h1>Welcome to  Teacher-o-Matic!</h1>
+        <p>${getCookieValue('name')}, enter your GitHub username in the header field</p>
+        <br>
+        <br>
+        <br>
         <h4>Comments:</h4>
         `;
         await showUserComments();
